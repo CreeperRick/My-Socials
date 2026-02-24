@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⋆͛•͛ matrix socials ⋆͛•͛</title>
+    <style>
+        /* reset & base tech vibes */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            background-color: #0f0f0f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* CANVAS — pure matrix rain (green, dense, glitchy) */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;   /* so clicks pass through to links */
+            opacity: 0.95;           /* slight dim for readability */
+        }
+
+        /* main card — glassy tech panel */
+        .link-panel {
+            position: relative;
+            z-index: 10;
+            background: rgba(10, 20, 5, 0.65);
+            backdrop-filter: blur(6px) saturate(200%);
+            -webkit-backdrop-filter: blur(6px) saturate(200%);
+            border: 1.5px solid #1fff8e;
+            border-radius: 42px;
+            padding: 3rem 2.5rem;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 
+                0 0 30px #1fff8e4d,
+                inset 0 0 15px #1fff8e30,
+                0 0 0 2px #0a330a inset;
+            text-align: center;
+            transition: box-shadow 0.3s ease;
+            animation: panelPulse 4s infinite alternate;
+        }
+
+        .link-panel:hover {
+            box-shadow: 0 0 45px #3effa0, inset 0 0 20px #6effb0;
+            border-color: #a0ffc0;
+        }
+
+        @keyframes panelPulse {
+            0% { box-shadow: 0 0 20px #1fff8e80, inset 0 0 8px #1fff8e40; }
+            100% { box-shadow: 0 0 40px #3affa0, inset 0 0 20px #5effad; }
+        }
+
+        /* profile glitch header */
+        .profile {
+            margin-bottom: 2.2rem;
+            position: relative;
+        }
+
+        .glitch {
+            font-size: 3.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #d0ffb0;
+            text-shadow: 
+                0.05em 0 0 #ff00c1, 
+                -0.05em -0.025em 0 #00fff9,
+                0.025em 0.05em 0 #33ff00;
+            animation: glitchShake 500ms infinite alternate;
+            font-family: 'Major Mono Display', 'Share Tech Mono', monospace;
+            word-break: keep-all;
+        }
+
+        .glitch small {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            display: block;
+            color: #b3ffb3;
+            text-shadow: 0 0 5px #00ff80;
+            opacity: 0.9;
+        }
+
+        @keyframes glitchShake {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, 0); }
+            80% { transform: translate(1px, 1px); }
+            100% { transform: translate(0); }
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: #b0ffb0;
+            margin-top: 12px;
+            text-transform: uppercase;
+            border-bottom: 1px dashed #35ff95;
+            padding-bottom: 10px;
+            letter-spacing: 3px;
+            word-spacing: 6px;
+        }
+
+        /* SOCIAL LINKS — grid / stack */
+        .links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin: 2.5rem 0 1.2rem;
+        }
+
+        /* individual link card — glitchy but functional */
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 1.1rem 1.2rem;
+            background: rgba(0, 20, 0, 0.7);
+            border: 1.8px solid #2eff9e;
+            border-radius: 60px;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #dbffe2;
+            text-shadow: 0 0 8px #00cc44;
+            letter-spacing: 1.2px;
+            backdrop-filter: blur(4px);
+            transition: all 0.25s ease;
+            box-shadow: 0 5px 10px rgba(0, 255, 0, 0.2), inset 0 0 10px #1fff8e1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: ">";
+            font-family: 'Courier New', monospace;
+            position: absolute;
+            left: 18px;
+            color: #66ffb3;
+            font-weight: bold;
+            opacity: 0.8;
+            font-size: 1.7rem;
+            transform: translateY(-2px);
+        }
+
+        .social-link::after {
+            content: "_";
+            font-family: 'Courier New', monospace;
+            position: absolute;
+            right: 18px;
+            color: #5effb0;
+            font-weight: bold;
+            opacity: 0.8;
+            font-size: 1.9rem;
+            animation: blink 1.2s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .social-link:hover {
+            background: #0f3f1ab3;
+            border-color: #96ffb0;
+            box-shadow: 0 0 30px #36ff9e, 0 0 5px #0f0;
+            transform: scale(1.02) translateY(-3px);
+            color: #ffffff;
+            text-shadow: 0 0 20px #b3ffcf;
+        }
+
+        .social-link i { 
+            font-style: normal; 
+            font-size: 1.9rem;
+            filter: drop-shadow(0 0 8px #22ff88);
+        }
+
+        /* fallback icons using plain text */
+        .link-label {
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+
+        /* small meta footer / ASCII */
+        .matrix-footer {
+            margin-top: 30px;
+            font-size: 1rem;
+            color: #37ff9e;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            border-top: 1px solid #1fff8e40;
+            padding-top: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+        }
+
+        .matrix-footer span {
+            animation: flicker 3s infinite;
+            background: #0e330e;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid #2aff8e;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            45% { opacity: 1; }
+            50% { opacity: 0.4; }
+            55% { opacity: 1; }
+            70% { opacity: 1; }
+            75% { opacity: 0.6; }
+            80% { opacity: 1; }
+        }
+
+        /* extra responsive */
+        @media (max-width: 500px) {
+            .link-panel { padding: 2rem 1.5rem; }
+            .glitch { font-size: 2.4rem; letter-spacing: 3px; }
+            .social-link { font-size: 1.2rem; padding: 0.9rem; }
+            .social-link i { font-size: 1.6rem; }
+        }
+
+        /* custom green selection */
+        ::selection {
+            background: #22ff88;
+            color: #001100;
+        }
+    </style>
+    <!-- import a couple of techy fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Major+Mono+Display&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Matrix background canvas injected with js -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- main card – all socials inside -->
+    <main class="link-panel">
+        <div class="profile">
+            <div class="glitch">
+                [ $0C!4L$ ]
+                <small>// root access</small>
+            </div>
+            <div class="tagline">
+                <span>⧩  matrix_tech  ⧩</span>
+            </div>
+        </div>
+
+        <!-- SOCIAL LINKS — you can replace # with your real URLs -->
+        <div class="links-grid">
+            <!-- TikTok -->
+            <a href="#" target="_blank" class="social-link" id="link-tiktok">
+                <i>🎵</i> <span class="link-label">TikTok</span>
+            </a>
+            <!-- YouTube -->
+            <a href="#" target="_blank" class="social-link" id="link-youtube">
+                <i>📺</i> <span class="link-label">YouTube</span>
+            </a>
+            <!-- Instagram -->
+            <a href="#" target="_blank" class="social-link" id="link-ig">
+                <i>📷</i> <span class="link-label">Instagram</span>
+            </a>
+            <!-- extra tech: you can add more, e.g. GitHub or Twitch, but kept as requested -->
+            <a href="#" target="_blank" class="social-link" id="link-site">
+                <i>⎔</i> <span class="link-label">dev.to</span>
+            </a>
+        </div>
+
+        <!-- matrix decorative footer -->
+        <div class="matrix-footer">
+            <span>{ 010101 }</span>
+            <span>⏚ 101010</span>
+            <span>#!</span>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            // ========== MATRIX RAIN CANVAS (pure green, fast, dense) ==========
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // resize handler
+            let w, h;
+            function setCanvasDimensions() {
+                w = window.innerWidth;
+                h = window.innerHeight;
+                canvas.width = w;
+                canvas.height = h;
+            }
+            setCanvasDimensions();
+            window.addEventListener('resize', setCanvasDimensions);
+
+            // matrix configuration
+            const columns = Math.floor(w / 20);  // column width ~20px
+            const drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.floor(Math.random() * -h); // negative start for staggered
+            }
+
+            // characters: mix of katakana, latin, numbers and symbols (full matrix vibe)
+            const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()_+[]{};:<>/?\\|`~";
+
+            function drawMatrix() {
+                // semi-transparent black to create trail effect (fade)
+                ctx.fillStyle = 'rgba(0, 5, 0, 0.055)'; // very dark green tint
+                ctx.fillRect(0, 0, w, h);
+
+                // set matrix green
+                ctx.fillStyle = '#2eff9e'; // bright matrix green
+                ctx.font = 'bold 18px "Share Tech Mono", "Courier New", monospace';
+                ctx.shadowColor = '#00ff80';
+                ctx.shadowBlur = 10;
+
+                for (let i = 0; i < drops.length; i++) {
+                    // pick random char
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * 22; // approx column width
+
+                    // vary brightness for depth
+                    const brightness = Math.random() * 0.7 + 0.5; // 0.5..1.2
+                    ctx.fillStyle = `rgba(100, 255, 120, ${brightness})`;
+                    
+                    // draw character
+                    ctx.fillText(char, x, drops[i]);
+
+                    // move drop down, reset if off screen
+                    if (drops[i] > h || Math.random() > 0.995) {
+                        drops[i] = -20; // reset to top
+                    } else {
+                        drops[i] += 20; // speed (pixels per frame)
+                    }
+
+                    // occasionally add secondary glitch characters near the drop
+                    if (Math.random() < 0.03 && drops[i] > 20) {
+                        ctx.fillStyle = '#b0ffb0';
+                        ctx.fillText(chars[Math.floor(Math.random()*chars.length)], x + 6, drops[i] - 18);
+                    }
+                }
+                ctx.shadowBlur = 0;
+                requestAnimationFrame(drawMatrix);
+            }
+
+            drawMatrix();
+
+            // ========== optional: replace # with your actual links ==========
+            // you can manually set the hrefs below.
+            // For demonstration they keep "#", but you can change them right here
+            // Example: 
+            const tiktokLink = document.getElementById('link-tiktok');
+            const youtubeLink = document.getElementById('link-youtube');
+            const igLink = document.getElementById('link-ig');
+            // uncomment and add your URLs ↓
+            // tiktokLink.href = 'https://tiktok.com/@youruser';
+            // youtubeLink.href = 'https://youtube.com/c/yourchannel';
+            // igLink.href = 'https://instagram.com/yourhandle';
+
+            // small easter egg: update status in console
+            console.log('🔋 matrix social panel — green tech theme active');
+        })();
+    </script>
+
+    <!-- hint: replace # placeholders with your real social media urls -->
+    <!-- you can also change the extra 'dev.to' link to something else (X, threads, etc) -->
+</body>
+</html>
