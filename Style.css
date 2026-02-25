@@ -10,16 +10,15 @@
     transition: background 0.2s;
 
 }
-/* Custom scrollbar for the Quick Links grid */
-.social-grid::-webkit-scrollbar {
+/* Add this to Style.css to hide the clunky scrollbar but keep scrolling */
+#quickLinksContainer::-webkit-scrollbar {
     width: 4px;
 }
-
-.social-grid::-webkit-scrollbar-track {
-    background: rgba(31, 255, 142, 0.05);
+#quickLinksContainer::-webkit-scrollbar-track {
+    background: transparent;
 }
-
-.social-grid::-webkit-scrollbar-thumb {
+#quickLinksContainer::-webkit-scrollbar-thumb {
     background: #1fff8e;
-    border-radius: 10px;
+    border-radius: 2px;
 }
+
