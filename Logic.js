@@ -2,7 +2,7 @@
     window.onSpotifyIframeApiReady = (IFrameAPI) => {
     const element = document.getElementById('spotify-player');
     const options = {
-        uri: 'spotify:playlist:YOUR_PLAYLIST_ID', // Replace with your URI
+        uri: 'https://open.spotify.com/embed/playlist/0PpupHUzxAX0brDme2ToyC?utm_source=generator&theme=0', // Replace with your URI
         width: '100%',
         height: '152'
     };
@@ -191,6 +191,7 @@
     
 
 })();
+
 
 
 
