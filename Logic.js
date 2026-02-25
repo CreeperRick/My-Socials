@@ -1,4 +1,25 @@
 (function() {
+    window.onSpotifyIframeApiReady = (IFrameAPI) => {
+    const element = document.getElementById('spotify-player');
+    const options = {
+        uri: 'spotify:playlist:YOUR_PLAYLIST_ID', // Replace with your URI
+        width: '100%',
+        height: '152'
+    };
+
+    IFrameAPI.createController(element, options, (EmbedController) => {
+        // Function to trigger play on first interaction
+        const startPlayback = () => {
+            EmbedController.play();
+            // Remove listener so it only triggers once
+            document.removeEventListener('click', startPlayback);
+            addTerminalLine("> Audio stream synchronized.");
+        };
+
+        // Listen for a click anywhere to bypass browser autoplay blocks
+        document.addEventListener('click', startPlayback);
+    });
+
     // ========== MATRIX RAIN BACKGROUND ==========
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
@@ -170,6 +191,7 @@
     
 
 })();
+
 
 
 
