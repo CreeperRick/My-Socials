@@ -1,4 +1,36 @@
 (function() {
+        // 1. Data Object
+    const quickLinks = [
+        { name: "GITHUB", url: "https://github.com/creeperrick" },
+        { name: "YOUTUBE", url: "https://youtube.com/@espdefeator" },
+        { name: "TIKTOK", url: "https://tiktok.com/@espdefeator" },
+        { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" },
+        { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" },
+        { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" },
+        { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" }
+    ];
+    
+    // 2. Rendering Logic
+    const container = document.getElementById('quickLinksContainer');
+    if (container) {
+        container.innerHTML = ''; // Clear hardcoded HTML
+        quickLinks.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.url;
+            a.target = "_blank";
+            a.textContent = link.name;
+            
+            // Link clicking feedback for the terminal
+            a.addEventListener('click', () => {
+                // This calls the log function already present in your code
+                if (typeof addLog === 'function') {
+                    addLog(`executing: ${link.name}_LINK`);
+                }
+            });
+    
+            container.appendChild(a);
+        });
+    }
     // ========== MATRIX RAIN BACKGROUND ==========
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
@@ -205,3 +237,4 @@ renderQuickLinks();
     addTerminalLine("System Initialized. Explorer Linked.");
 
 })();
+
