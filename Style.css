@@ -1,0 +1,23 @@
+/* Update this section in your <style> tag */
+.social-links-panel {
+    background: #0b140b;
+    border: 1px solid #1fff8e;
+    border-radius: 8px;
+    padding: 10px;
+    flex: 1; /* Keep its flex ratio */
+    
+    /* ADD THESE LINES */
+    max-height: 180px;        /* Limits the height so it has to scroll */
+    overflow-y: auto;         /* Adds the scrollbar when needed */
+    scrollbar-width: thin;    /* Makes scrollbar thin in Firefox */
+    scrollbar-color: #1fff8e #0b140b; /* Custom colors for Firefox */
+}
+
+/* Optional: Custom scrollbar styling for Chrome/Edge/Safari */
+.social-links-panel::-webkit-scrollbar {
+    width: 4px;
+}
+.social-links-panel::-webkit-scrollbar-thumb {
+    background: #1fff8e;
+    border-radius: 10px;
+}
