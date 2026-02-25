@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ESPdefeator | Cross-Platform OS</title>
+    <title>ESPdefeator | Mobile OS</title>
     <style>
-        /* RESET & BASE STYLES */
+        /* RESET — eDEX-UI ultra-minimalist, neon green */
         * {
             margin: 0;
             padding: 0;
@@ -34,13 +34,12 @@
             opacity: 0.25;
         }
 
-        /* MAIN CONTAINER */
         .edex-terminal {
             position: relative;
             z-index: 20;
             width: 95vw;
             max-width: 1400px;
-            height: 90vh;
+            height: 90vh; /* Desktop Default */
             background: #0f120f;
             border: 2px solid #1fff8e;
             border-radius: 12px;
@@ -49,7 +48,6 @@
             flex-direction: column;
             overflow: hidden;
             backdrop-filter: blur(1px);
-            transition: all 0.3s ease;
         }
 
         /* STATUS BAR */
@@ -59,32 +57,19 @@
             padding: 8px 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
             color: #2eff9e;
             font-size: 0.9rem;
             text-transform: uppercase;
         }
 
         .status-item { display: flex; align-items: center; gap: 6px; }
-        .dot { width: 10px; height: 10px; background: #1fff8e; border-radius: 50%; animation: pulse 2s infinite; }
-        
-        .fullscreen-btn {
-            background: #1fff8e;
-            color: #000;
-            border: none;
-            padding: 2px 8px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
+        .dot { width: 10px; height: 10px; background: #1fff8e; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        /* CONTENT AREA */
+        /* MAIN GRID */
         .edex-main { display: flex; flex: 1; padding: 6px; gap: 6px; min-height: 0; }
 
+        /* FILE EXPLORER */
         .file-explorer {
             width: 280px;
             background: #0b140b;
@@ -101,12 +86,13 @@
             color: #adffb0;
             font-weight: bold;
             display: flex;
+            cursor: pointer;
         }
 
         .explorer-tree { flex: 1; overflow-y: auto; padding: 12px 0; }
 
         .tree-item {
-            padding: 10px 12px 10px 30px;
+            padding: 8px 12px 8px 30px;
             color: #9effb0;
             font-size: 0.95rem;
             position: relative;
@@ -114,12 +100,14 @@
             text-decoration: none;
             display: block;
         }
+
         .tree-item:hover { background: #1a3a1a; }
         .tree-item.active { background: #1f4a1f; border-left: 4px solid #8affb0; color: #fff; }
+
         .tree-item::before { content: "📁"; position: absolute; left: 8px; }
         .tree-item.file::before { content: "📄"; }
 
-        /* CENTER TERMINAL AREA */
+        /* TERMINAL & CLOCK */
         .center-area { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
         .terminal-window {
             background: #0a100a;
@@ -135,9 +123,6 @@
         .terminal-content { flex: 1; padding: 16px; overflow-y: auto; color: #b0ffb0; text-shadow: 0 0 5px #1fff8e; }
         .prompt { color: #9eff6e; font-weight: bold; margin-right: 8px; }
 
-        /* WIDGETS */
-        .widget-row { display: flex; gap: 6px; flex: 1.2; }
-        
         .clock-panel {
             background: #0b140b;
             border: 1px solid #1fff8e;
@@ -147,8 +132,9 @@
             align-items: center;
             justify-content: center;
             flex: 1;
+            padding: 10px;
         }
-        .analog-clock { font-size: 3rem; color: #8affb0; text-shadow: 0 0 15px #1fff8e; }
+        .analog-clock { font-size: 3.5rem; color: #8affb0; text-shadow: 0 0 15px #1fff8e; }
 
         .social-links-panel {
             background: #0b140b;
@@ -158,26 +144,62 @@
             flex: 1.5;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            overflow-y: auto; /* Added scroll functionality */
+            scrollbar-width: thin;
+            scrollbar-color: #1fff8e #0b140b;
         }
 
-        .social-grid { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: 8px; }
+        .social-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 8px; 
+            margin-top: 10px; 
+        }
+
         .social-grid a { 
             background: #0f1f0f; border: 1px solid #2eff9e; color: #fff; 
-            text-decoration: none; padding: 8px; font-size: 0.75rem; border-radius: 4px; text-align: center;
+            text-decoration: none; padding: 8px; font-size: 0.8rem; border-radius: 4px; text-align: center;
         }
+        .social-grid a:hover { background: #1f4a1f; box-shadow: 0 0 10px #1fff8e; }
 
         .edex-footer { background: #0f1a0f; border-top: 2px solid #1fff8e; padding: 8px 20px; color: #4eff9e; font-size: 0.8rem; display: flex; justify-content: space-between; }
 
-        /* --- RESPONSIVE LOGIC --- */
-        @media (max-width: 900px) {
-            .edex-terminal { height: auto; min-height: 98vh; width: 98vw; }
-            .edex-main { flex-direction: column; overflow-y: visible; }
-            .file-explorer { width: 100%; max-height: 300px; }
-            .widget-row { flex-direction: column; }
-            .terminal-window { min-height: 400px; }
-            .analog-clock { font-size: 2.2rem; }
-            .status-bar { font-size: 0.7rem; flex-wrap: wrap; }
+        /* --- MOBILE RESPONSIVE OVERRIDES --- */
+        @media (max-width: 850px) {
+            .edex-terminal {
+                height: auto;
+                min-height: 98vh;
+                margin: 5px;
+            }
+            .edex-main {
+                flex-direction: column;
+                overflow-y: visible;
+            }
+            .file-explorer {
+                width: 100%;
+                max-height: 250px;
+            }
+            .center-area {
+                flex: none;
+            }
+            /* Stack clock, spotify, and links */
+            .center-area > div:last-child {
+                flex-direction: column !important;
+            }
+            .terminal-window {
+                min-height: 350px;
+            }
+            .analog-clock {
+                font-size: 2.5rem;
+            }
+            .status-bar {
+                font-size: 0.7rem;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            .tree-item {
+                padding: 12px 12px 12px 35px; /* Larger touch targets */
+            }
         }
     </style>
 </head>
@@ -185,19 +207,16 @@
 
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="edex-terminal" id="mainApp">
+    <div class="edex-terminal">
         <div class="status-bar">
             <div class="status-item"><span class="dot"></span> ESPdefeator@OS</div>
             <div class="status-item" id="currentPath">⚡ /socials/</div>
-            <div class="status-item">
-                <button class="fullscreen-btn" onclick="toggleFullscreen()">[F11] Fullscreen</button>
-                🕒 <span id="uptime">00:00:00</span>
-            </div>
+            <div class="status-item">🕒 <span id="uptime">00:00:00</span></div>
         </div>
 
         <div class="edex-main">
             <div class="file-explorer">
-                <div class="explorer-header">
+                <div class="explorer-header" id="explorerHeader">
                     <span>📁 ROOT</span>
                     <span style="flex:1; text-align:right;" id="folderIndicator">/socials/</span>
                 </div>
@@ -208,33 +227,45 @@
                 <div class="terminal-window">
                     <div class="terminal-titlebar">
                         <span>bash 5.1</span>
-                        <span>system_log.sh</span>
+                        <span>interactive_fs.sh</span>
                     </div>
                     <div class="terminal-content" id="terminalContent">
-                        <div class="terminal-line"><span class="prompt">┌─[user@esp]</span></div>
-                        <div class="terminal-line"><span class="prompt">└─$</span> ./startup_check</div>
-                        <div class="terminal-line">> Platform Detected: <span id="platformInfo">Checking...</span></div>
+                        <div class="terminal-line"><span class="prompt">┌─[system@matrix]</span></div>
+                        <div class="terminal-line"><span class="prompt">└─$</span> ./init_explorer.sh</div>
+                        <div class="terminal-line">> Filesystem Linked. Click to execute.</div>
                         <div id="dynamicTerminalLine"></div>
                     </div>
                 </div>
 
-                <div class="widget-row">
-                    <div class="clock-panel">
+                <div style="display: flex; gap: 6px; flex: 1.2;">
+                    <div class="clock-panel" style="flex: 1;">
                         <div class="analog-clock" id="largeClock">00:00:00</div>
-                        <div style="color:#4eff8a; font-size:0.6rem; letter-spacing: 2px;">LOCAL TIME</div>
+                        <div style="color:#4eff8a; font-size:0.7rem; margin-top:5px;">REAL-TIME CLOCK</div>
                     </div>
 
-                    <div class="social-links-panel">
-                        <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.7rem; padding-bottom:4px; margin-bottom: 8px;">⤷ AUDIO_SUB</div>
-                        <iframe id="spotify-iframe" style="border-radius:8px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6GJ9p9fSsh3?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <div class="social-links-panel" style="flex: 1.5; padding: 5px;">
+                        <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.8rem; padding-bottom:4px; margin-bottom: 5px;">⤷ AUDIO_SUBSYSTEM</div>
+                        <iframe 
+                            id="spotify-iframe"
+                            style="border-radius:12px" 
+                            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M" 
+                            width="100%" 
+                            height="152" 
+                            frameBorder="0" 
+                            allowfullscreen="" 
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                            loading="lazy">
+                        </iframe>
                     </div>
 
-                    <div class="social-links-panel">
-                        <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.7rem; padding-bottom:4px;">⤷ NAV_LINKS</div>
+                    <div class="social-links-panel" style="flex: 1;">
+                        <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.8rem; padding-bottom:4px;">⤷ QUICK_LINKS</div>
                         <div class="social-grid">
                             <a href="https://github.com/creeperrick" target="_blank">GITHUB</a>
                             <a href="https://youtube.com/@espdefeator" target="_blank">YOUTUBE</a>
                             <a href="https://tiktok.com/@espdefeator" target="_blank">TIKTOK</a>
+                            <a href="https://instagram.com/espdefeator" target="_blank">INSTAGRAM</a>
+                            <a href="https://discord.com/users/1426713075989610698" target="_blank">DISCORD</a>
                         </div>
                     </div>
                 </div>
@@ -242,123 +273,145 @@
         </div>
 
         <div class="edex-footer">
-            <span>📡 FS_STATUS: ACTIVE</span>
-            <span id="nodeCount">V1.2.0-STABLE</span>
+            <span>📡 FS_STATUS: ONLINE</span>
+            <span>NODES: <span id="nodeCount">2040</span></span>
         </div>
     </div>
 
     <script>
-        // MATRIX BACKGROUND
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        let w, h, cols, drops;
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        (function() {
+            // --- MATRIX RAIN ---
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, cols, drops;
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ｱｲｳｴｵｶｷｸｹｺ";
 
-        function initMatrix() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-            cols = Math.floor(w / 20);
-            drops = Array(cols).fill(0);
-        }
-
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = "#0F0";
-            ctx.font = "15px monospace";
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * 20, drops[i] * 20);
-                if (drops[i] * 20 > h && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
+            function initMatrix() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+                cols = Math.floor(w / 20);
+                drops = Array(cols).fill(0);
             }
-        }
 
-        // FULLSCREEN LOGIC
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
+            function drawMatrix() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, w, h);
+                ctx.fillStyle = "#0F0";
+                ctx.font = "15px monospace";
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * 20, drops[i] * 20);
+                    if (drops[i] * 20 > h && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
                 }
             }
-        }
 
-        // FILE SYSTEM
-        const fs = {
-            name: 'root',
-            children: [
-                { 
-                    name: 'socials', 
-                    type: 'folder', 
-                    children: [
-                        { name: 'tiktok.lnk', type: 'file', url: 'https://tiktok.com/@espdefeator' },
-                        { name: 'youtube.cfg', type: 'file', url: 'https://youtube.com/@espdefeator' },
-                        { name: 'github.dev', type: 'file', url: 'https://github.com/creeperrick' }
-                    ]
-                },
-                { name: 'system.bin', type: 'file' }
-            ]
-        };
+            window.addEventListener('resize', initMatrix);
+            initMatrix();
+            setInterval(drawMatrix, 50);
 
-        let currentFolder = fs.children[0];
-        let pathStack = [fs, fs.children[0]];
+            // --- FS DATA ---
+            const fs = {
+                name: 'root',
+                type: 'folder',
+                children: [
+                    { 
+                        name: 'socials', 
+                        type: 'folder', 
+                        children: [
+                            { name: 'tiktok.link', type: 'file', url: 'https://tiktok.com/@espdefeator' },
+                            { name: 'youtube.cfg', type: 'file', url: 'https://youtube.com/@espdefeator' },
+                            { name: 'instagram.ini', type: 'file', url: 'https://instagram.com/espdefeator' },
+                            { name: 'discord.pdf', type: 'file', url: 'https://discord.com/users/1426713075989610698' },
+                            { name: 'hub.dev', type: 'file', url: 'https://github.com/CreeperRick' }
+                        ]
+                    },
+                    { 
+                        name: 'system', 
+                        type: 'folder', 
+                        children: [
+                            { name: 'kernel.bin', type: 'file' },
+                            { name: 'net_config', type: 'file' }
+                        ]
+                    }
+                ]
+            };
 
-        function addLog(text) {
-            const term = document.getElementById('terminalContent');
-            const line = document.createElement('div');
-            line.style.fontSize = "0.8rem";
-            line.innerHTML = `<span class="prompt">>></span> ${text}`;
-            term.insertBefore(line, document.getElementById('dynamicTerminalLine'));
-            term.scrollTop = term.scrollHeight;
-        }
+            let currentFolder = fs.children[0];
+            let pathStack = [fs, fs.children[0]];
 
-        function renderTree() {
-            const treeEl = document.getElementById('fileTree');
-            treeEl.innerHTML = '';
-            
-            if (currentFolder !== fs) {
-                const up = document.createElement('div');
-                up.className = 'tree-item';
-                up.textContent = '..';
-                up.onclick = () => { pathStack.pop(); currentFolder = pathStack[pathStack.length-1]; renderTree(); addLog('cd ..'); };
-                treeEl.appendChild(up);
+            const fileTreeEl = document.getElementById('fileTree');
+            const folderIndicator = document.getElementById('folderIndicator');
+            const currentPathEl = document.getElementById('currentPath');
+            const termContent = document.getElementById('terminalContent');
+
+            function addLog(text) {
+                const line = document.createElement('div');
+                line.style.margin = "4px 0";
+                line.style.fontSize = "0.85rem";
+                line.innerHTML = `<span class="prompt">>></span> ${text}`;
+                termContent.insertBefore(line, document.getElementById('dynamicTerminalLine'));
+                termContent.scrollTop = termContent.scrollHeight;
             }
 
-            currentFolder.children.forEach(item => {
-                const el = document.createElement(item.url ? 'a' : 'div');
-                el.className = `tree-item ${item.type === 'folder' ? '' : 'file'}`;
-                el.textContent = item.name;
-                if (item.url) { el.href = item.url; el.target = "_blank"; }
-                el.onclick = (e) => {
-                    if (item.type === 'folder') {
-                        e.preventDefault();
-                        pathStack.push(item);
-                        currentFolder = item;
-                        renderTree();
-                        addLog(`cd ./${item.name}`);
-                    } else { addLog(`opening ${item.name}`); }
-                };
-                treeEl.appendChild(el);
-            });
+            function renderTree() {
+                fileTreeEl.innerHTML = '';
+                
+                if (currentFolder !== fs) {
+                    const up = document.createElement('div');
+                    up.className = 'tree-item folder-open';
+                    up.textContent = '..';
+                    up.onclick = () => { 
+                        pathStack.pop(); 
+                        currentFolder = pathStack[pathStack.length-1]; 
+                        renderTree(); 
+                        addLog('cd ..'); 
+                    };
+                    fileTreeEl.appendChild(up);
+                }
 
-            const pathStr = pathStack.map(f => f.name === 'root' ? '' : f.name).join('/') + '/';
-            document.getElementById('currentPath').innerText = `⚡ ${pathStr}`;
-        }
+                currentFolder.children.forEach(item => {
+                    const el = document.createElement(item.url ? 'a' : 'div');
+                    el.className = `tree-item ${item.type === 'folder' ? 'folder' : 'file'}`;
+                    el.textContent = item.name;
+                    if (item.url) { el.href = item.url; el.target = "_blank"; }
 
-        // INIT
-        window.addEventListener('resize', initMatrix);
-        initMatrix();
-        setInterval(drawMatrix, 50);
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('largeClock').innerText = now.toLocaleTimeString('en-GB');
-            document.getElementById('uptime').innerText = Math.floor(performance.now() / 1000) + "s";
-        }, 1000);
+                    el.onclick = (e) => {
+                        document.querySelectorAll('.tree-item').forEach(x => x.classList.remove('active'));
+                        el.classList.add('active');
+                        if (item.type === 'folder') {
+                            e.preventDefault();
+                            pathStack.push(item);
+                            currentFolder = item;
+                            renderTree();
+                            addLog(`cd ./${item.name}`);
+                        } else {
+                            addLog(`executing: ${item.name}`);
+                        }
+                    };
+                    fileTreeEl.appendChild(el);
+                });
 
-        document.getElementById('platformInfo').innerText = /Android|iPhone/i.test(navigator.userAgent) ? "MOBILE_X64" : "DESKTOP_X64";
-        renderTree();
+                const pathStr = pathStack.map(f => f.name === 'root' ? '' : f.name).join('/') + '/';
+                folderIndicator.innerText = pathStr;
+                currentPathEl.innerText = `⚡ ${pathStr}`;
+            }
+
+            // --- CLOCK & STATS ---
+            function updateUI() {
+                const now = new Date();
+                document.getElementById('largeClock').innerText = now.toLocaleTimeString('en-GB');
+                
+                let up = Math.floor(performance.now() / 1000);
+                let h = Math.floor(up / 3600).toString().padStart(2, '0');
+                let m = Math.floor((up % 3600) / 60).toString().padStart(2, '0');
+                let s = (up % 60).toString().padStart(2, '0');
+                document.getElementById('uptime').innerText = `${h}:${m}:${s}`;
+            }
+            setInterval(updateUI, 1000);
+
+            renderTree();
+        })();
     </script>
 </body>
 </html>
