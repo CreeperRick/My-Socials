@@ -44,39 +44,33 @@
     setInterval(updateClock, 1000);
     updateClock();
     // ========== quickLinks ========== 
-    window.addEventListener('load', () => {
-        const quickLinks = [
-            { name: "GITHUB", url: "https://github.com/creeperrick" },
-            { name: "YOUTUBE", url: "https://youtube.com/@espdefeator" },
-            { name: "TIKTOK", url: "https://tiktok.com/@espdefeator" },
-            { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" },
-            { name: "TWITCH", url: "#" },
-            { name: "DISCORD", url: "#" },
-            { name: "PROJECTS", url: "#" }
-        ];
-    
-        const container = document.getElementById('quickLinksContainer');
-        
-        if (container) {
-            container.innerHTML = ''; 
-            quickLinks.forEach(link => {
-                const a = document.createElement('a');
-                a.href = link.url;
-                a.target = "_blank";
-                a.textContent = link.name;
-                
-                // Link to the terminal logging function in Logic.js
-                a.addEventListener('click', () => {
-                    if (typeof addTerminalLine === 'function') {
-                        addTerminalLine(`executing: ${link.name}_LINK`);
-                    }
+// --- DYNAMIC QUICK LINKS ---
+            const quickLinks = [
+                { name: "GITHUB", url: "https://github.com/creeperrick" },
+                { name: "YOUTUBE", url: "https://youtube.com/@espdefeator" },
+                { name: "TIKTOK", url: "https://tiktok.com/@espdefeator" },
+                { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" },
+                { name: "EXTRA LINK 1", url: "#" },
+                { name: "EXTRA LINK 2", url: "#" }
+            ];
+
+            const qlContainer = document.getElementById('quickLinksContainer');
+            if (qlContainer) {
+                qlContainer.innerHTML = ''; // Clear existing
+                quickLinks.forEach(link => {
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.target = "_blank";
+                    a.textContent = link.name;
+                    
+                    // Attach to the addLog function already in this script
+                    a.onclick = () => {
+                        addLog(`executing: ${link.name}_LINK`);
+                    };
+                    
+                    qlContainer.appendChild(a);
                 });
-    
-                container.appendChild(a);
-            });
-        }
-    });
-    
+            }
     // ========== INTERACTIVE FILE SYSTEM ==========
     const fs = {
         name: 'root',
@@ -195,6 +189,7 @@
             terminalInputDisplay.innerText = '_';
         }
     });
+
 
 
 
