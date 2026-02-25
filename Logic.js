@@ -152,6 +152,19 @@
         terminalContent.insertBefore(line, document.getElementById('dynamicTerminalLine'));
         terminalContent.scrollTop = terminalContent.scrollHeight;
     }
+    
+    function setCanvasDimensions() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+    // Recalculate columns for mobile
+    const columns = Math.floor(w / 20);
+    drops.length = columns; 
+    for (let i = 0; i < columns; i++) {
+        if(drops[i] === undefined) drops[i] = Math.floor(Math.random() * -h);
+        }
+    }
 
     hiddenInput.addEventListener('input', () => {
         terminalInputDisplay.innerText = hiddenInput.value + '_';
@@ -171,11 +184,3 @@
     
 
 })();
-
-
-
-
-
-
-
-
