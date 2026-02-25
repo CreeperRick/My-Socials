@@ -1,27 +1,5 @@
 (function() {  
     
-    // ========== AUDIO AUTO-INITIALIZATION ==========
-let audioInitialized = false;
-
-function initializeAudio() {
-    if (audioInitialized) return;
-    
-    const spotifyIframe = document.getElementById('spotify-widget');
-    if (spotifyIframe) {
-        // Refreshing the src with autoplay=1 after a user gesture
-        const currentSrc = spotifyIframe.src;
-        spotifyIframe.src = currentSrc + "&autoplay=1";
-        
-        addTerminalLine("AUDIO_SUBSYSTEM: Streaming initialized.");
-        audioInitialized = true;
-    }
-}
-
-// Attach to the window to catch the first interaction
-window.addEventListener('click', initializeAudio, { once: true });
-window.addEventListener('keydown', initializeAudio, { once: true });
-
-    
     // ========== MATRIX RAIN BACKGROUND ==========
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
@@ -193,6 +171,7 @@ window.addEventListener('keydown', initializeAudio, { once: true });
     
 
 })();
+
 
 
 
