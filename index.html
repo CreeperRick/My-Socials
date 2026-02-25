@@ -192,6 +192,26 @@
             .analog-clock {
                 font-size: 2.5rem;
             }
+            .social-links-panel {
+                background: #0b140b;
+                border: 1px solid #1fff8e;
+                border-radius: 8px;
+                padding: 10px;
+                flex: 1.5;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden; /* Keep the panel itself clean */
+            }
+        /* SCROLLABLE GRID LOGIC */
+            .social-grid { 
+                display: grid; 
+                grid-template-columns: 1fr; 
+                gap: 8px; 
+                margin-top: 10px; 
+                overflow-y: auto; /* Enable vertical scroll */
+                max-height: 150px; /* Limit height to trigger scrolling */
+                padding-right: 5px;
+            }
             .status-bar {
                 font-size: 0.7rem;
                 flex-wrap: wrap;
@@ -259,7 +279,7 @@
                     </div>
 
                     <div class="social-links-panel" style="flex: 1;">
-                        <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.8rem; padding-bottom:4px;">⤷ QUICK_LINKS</div>
+                        <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.8rem; padding-bottom:4;px;">⤷ QUICK_LINKS</div>
                         <div class="social-grid">
                             <a href="https://github.com/creeperrick" target="_blank">GITHUB</a>
                             <a href="https://youtube.com/@espdefeator" target="_blank">YOUTUBE</a>
