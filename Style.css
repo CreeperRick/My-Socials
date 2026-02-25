@@ -22,3 +22,18 @@
     border-radius: 2px;
 }
 
+// ========== quickLinks ==========
+#quickLinksContainer {
+    scrollbar-width: thin;
+    scrollbar-color: #1fff8e transparent;
+}
+
+#quickLinksContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#quickLinksContainer::-webkit-scrollbar-thumb {
+    background-color: #1fff8e;
+    border-radius: 10px;
+    border: 1px solid #0b140b;
+}
