@@ -131,21 +131,32 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex: 1;
+            padding: 15px;
+            flex-shrink: 0;
         }
-        .analog-clock { font-size: 3.5rem; color: #8affb0; text-shadow: 0 0 15px #1fff8e; }
+        .analog-clock { font-size: 2.5rem; color: #8affb0; text-shadow: 0 0 15px #1fff8e; }
 
         .social-links-panel {
             background: #0b140b;
             border: 1px solid #1fff8e;
             border-radius: 8px;
             padding: 10px;
-            flex: 1.5;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        
+        /* SCROLLBAR STYLING */
+        #quickLinksContainer::-webkit-scrollbar { width: 4px; }
+        #quickLinksContainer::-webkit-scrollbar-track { background: transparent; }
+        #quickLinksContainer::-webkit-scrollbar-thumb { background: #1fff8e; border-radius: 2px; }
+
+        .social-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
         .social-grid a { 
             background: #0f1f0f; border: 1px solid #2eff9e; color: #fff; 
-            text-decoration: none; padding: 8px; font-size: 0.8rem; border-radius: 4px; text-align: center;
+            text-decoration: none; padding: 10px; font-size: 0.8rem; border-radius: 4px; text-align: center;
+            transition: all 0.2s;
         }
         .social-grid a:hover { background: #1f4a1f; box-shadow: 0 0 10px #1fff8e; }
 
@@ -169,8 +180,7 @@
                     <span>📁 ROOT</span>
                     <span style="flex:1; text-align:right;" id="folderIndicator">//</span>
                 </div>
-                <div class="explorer-tree" id="fileTree">
-                    </div>
+                <div class="explorer-tree" id="fileTree"></div>
             </div>
 
             <div class="center-area">
@@ -186,13 +196,20 @@
                         <div id="dynamicTerminalLine"></div>
                     </div>
                 </div>
-<div class="social-links-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-    <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.8rem; padding-bottom:4px; flex-shrink: 0;">
-        ⤷ QUICK_LINKS
-    </div>
-    <div id="quickLinksContainer" style="overflow-y: auto; flex: 1; margin-top: 10px;">
-        </div>
-</div>
+
+                <div class="clock-panel">
+                    <div class="analog-clock" id="largeClock">00:00:00</div>
+                    <div style="color: #1fff8e; font-size: 0.7rem; margin-top: 5px;">SYSTEM TIME</div>
+                </div>
+
+                <div class="social-links-panel">
+                    <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.8rem; padding-bottom:4px; flex-shrink: 0;">
+                        ⤷ QUICK_LINKS
+                    </div>
+                    <div id="quickLinksContainer" style="overflow-y: auto; flex: 1; margin-top: 10px;">
+                        <div class="social-grid" id="linkGrid">
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -234,7 +251,7 @@
                 type: 'folder',
                 children: [
                     { 
-                        name: '', 
+                        name: 'socials', 
                         type: 'folder', 
                         children: [
                             { name: 'tiktok.link', type: 'file', url: 'https://tiktok.com/@espdefeator' },
@@ -273,9 +290,9 @@
             function renderTree() {
                 fileTreeEl.innerHTML = '';
                 
-                if (currentFolder !== fs) {
+                if (pathStack.length > 1) {
                     const up = document.createElement('div');
-                    up.className = 'tree-item folder-open';
+                    up.className = 'tree-item folder';
                     up.textContent = '..';
                     up.onclick = () => { pathStack.pop(); currentFolder = pathStack[pathStack.length-1]; renderTree(); addLog('cd ..'); };
                     fileTreeEl.appendChild(up);
@@ -308,10 +325,31 @@
                 currentPathEl.innerText = `⚡ ${pathStr}`;
             }
 
+            // --- QUICK LINKS GENERATOR ---
+            const links = [
+                { name: "GITHUB", url: "https://github.com/CreeperRick" },
+                { name: "YOUTUBE", url: "https://youtube.com/@espdefeator" },
+                { name: "TIKTOK", url: "https://tiktok.com/@espdefeator" },
+                { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" },
+                { name: "EXTRA_LINK_1", url: "#" },
+                { name: "EXTRA_LINK_2", url: "#" }
+            ];
+
+            const linkGrid = document.getElementById('linkGrid');
+            links.forEach(link => {
+                const a = document.createElement('a');
+                a.href = link.url;
+                a.target = "_blank";
+                a.textContent = link.name;
+                a.onclick = () => addLog(`executing: external_link/${link.name.toLowerCase()}`);
+                linkGrid.appendChild(a);
+            });
+
             // --- CLOCK & STATS ---
             function updateUI() {
                 const now = new Date();
-                document.getElementById('largeClock').innerText = now.toLocaleTimeString('en-GB');
+                const clockEl = document.getElementById('largeClock');
+                if(clockEl) clockEl.innerText = now.toLocaleTimeString('en-GB');
                 
                 let up = Math.floor(performance.now() / 1000);
                 let h = Math.floor(up / 3600).toString().padStart(2, '0');
@@ -323,6 +361,7 @@
 
             // Init
             renderTree();
+            updateUI();
         })();
     </script>
 </body>
