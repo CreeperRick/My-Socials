@@ -45,20 +45,17 @@
     updateClock();
     
 // --- QUICK LINKS GENERATOR (Explorer Style) ---
-javascript
 window.addEventListener('load', () => {
     const quickLinks = [
         { name: "GITHUB", url: "https://github.com/creeperrick" },
         { name: "YOUTUBE", url: "https://youtube.com/@espdefeator" },
         { name: "TIKTOK", url: "https://tiktok.com/@espdefeator" },
         { name: "INSTAGRAM", url: "https://instagram.com/espdefeator" },
-        { name: "EXTRA_LINK_01", url: "#" },
-        { name: "EXTRA_LINK_02", url: "#" },
-        { name: "EXTRA_LINK_03", url: "#" }
+        { name: "EXTRA_01", url: "#" },
+        { name: "EXTRA_02", url: "#" }
     ];
 
     const container = document.getElementById('quickLinksContainer');
-    
     if (container) {
         container.innerHTML = ''; 
         quickLinks.forEach(link => {
@@ -66,15 +63,21 @@ window.addEventListener('load', () => {
             a.href = link.url;
             a.target = "_blank";
             a.textContent = link.name;
-            a.style.display = "block"; // Stack them vertically
             
+            // Apply standard button styling via JS to ensure visibility
+            a.style.display = "block";
+            a.style.background = "#0f1f0f";
+            a.style.border = "1px solid #2eff9e";
+            a.style.color = "#fff";
+            a.style.padding = "8px";
+            a.style.marginBottom = "5px";
+            a.style.textAlign = "center";
+            a.style.textDecoration = "none";
+            a.style.fontSize = "0.8rem";
+
             a.onclick = () => {
-                // Call addLog because that is what is defined in index.html
-                if (typeof addLog === 'function') {
-                    addLog(`executing: ${link.name}_LINK`);
-                }
+                if (typeof addLog === 'function') addLog(`executing: ${link.name}`);
             };
-            
             container.appendChild(a);
         });
     }
@@ -198,6 +201,7 @@ window.addEventListener('load', () => {
             terminalInputDisplay.innerText = '_';
         }
     });
+
 
 
 
