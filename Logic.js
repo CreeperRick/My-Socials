@@ -56,7 +56,7 @@
                     { name: 'tiktok.link', type: 'file', content: 'https://www.tiktok.com/@espdefeator' },
                     { name: 'youtube.cfg', type: 'file', content: 'https://youtube.com/@espdefeator' },
                     { name: 'instagram.ini', type: 'file', content: 'https://instagram.com/espdefeator' },
-                    { name: 'discord.pdf', type: 'file', url: 'https://discord.com/users/1426713075989610698' }
+                    { name: 'discord.pdf', type: 'file', content: 'https://discord.com/users/1426713075989610698' }
                     { name: 'hub.dev', type: 'file', content: 'https://github.com/creeperrick' }
                 ]
             },
@@ -169,3 +169,4 @@
     addTerminalLine("System Initialized. Explorer Linked.");
 
 })();
+
