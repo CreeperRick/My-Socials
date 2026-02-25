@@ -1,25 +1,18 @@
 (function() {
-    window.onSpotifyIframeApiReady = (IFrameAPI) => {
-    const element = document.getElementById('spotify-player');
-    const options = {
-        uri: 'https://open.spotify.com/embed/playlist/0PpupHUzxAX0brDme2ToyC?utm_source=generator&theme=0', // Replace with your URI
-        width: '100%',
-        height: '152'
-    };
-
-    IFrameAPI.createController(element, options, (EmbedController) => {
-        // Function to trigger play on first interaction
-        const startPlayback = () => {
-            EmbedController.play();
-            // Remove listener so it only triggers once
-            document.removeEventListener('click', startPlayback);
-            addTerminalLine("> Audio stream synchronized.");
-        };
-
-        // Listen for a click anywhere to bypass browser autoplay blocks
-        document.addEventListener('click', startPlayback);
-    });
-
+    // --- AUDIO SUBSYSTEM OVERRIDE ---
+document.addEventListener('click', function() {
+    const spotifyIframe = document.getElementById('spotify-iframe');
+    if (spotifyIframe) {
+        // We append a query param to the URL to "refresh" it into playing
+        // Note: This only works if the user has a Spotify session active
+        const currentSrc = spotifyIframe.src;
+        if (!currentSrc.includes('autoplay=1')) {
+            spotifyIframe.src = currentSrc + "&autoplay=1";
+            addLog("AUDIO_SUBSYSTEM: Initializing Autoplay...");
+        }
+    }
+}, { once: true }); // 'once: true' ensures this only runs on the first click
+    
     // ========== MATRIX RAIN BACKGROUND ==========
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
@@ -191,6 +184,7 @@
     
 
 })();
+
 
 
 
