@@ -140,34 +140,35 @@
             overflow: hidden; /* Keep the panel itself clean */
         }
 
-        /* SCROLLABLE GRID LOGIC */
-        .social-grid { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 8px; 
-            margin-top: 10px; 
-            overflow-y: auto; /* Enable vertical scroll */
-            max-height: 150px; /* Limit height to trigger scrolling */
-            padding-right: 5px;
-        }
-
-        /* Custom scrollbar for the grid */
-        .social-grid::-webkit-scrollbar {
-            width: 4px;
-        }
-        .social-grid::-webkit-scrollbar-thumb {
-            background: #1fff8e;
-            border-radius: 4px;
-        }
-        .social-grid::-webkit-scrollbar-track {
-            background: #0b140b;
-        }
-
-        .social-grid a { 
-            background: #0f1f0f; border: 1px solid #2eff9e; color: #fff; 
-            text-decoration: none; padding: 8px; font-size: 0.8rem; border-radius: 4px; text-align: center;
-        }
-        .social-grid a:hover { background: #1f4a1f; box-shadow: 0 0 10px #1fff8e; }
+       /* Update the social-grid to allow internal scrolling */
+       .social-grid { 
+           display: grid; 
+           grid-template-columns: 1fr; 
+           gap: 8px; 
+           margin-top: 10px; 
+           
+           /* SCROLL LOGIC */
+           max-height: 150px;       /* Limits height to trigger scrolling */
+           overflow-y: auto;        /* Enables vertical scroll */
+           padding-right: 5px;      /* Space for the scrollbar */
+           
+           /* Firefox support */
+           scrollbar-width: thin;
+           scrollbar-color: #1fff8e #0b140b;
+       }
+       
+       /* Custom scrollbar for Chrome, Edge, and Safari */
+       .social-grid::-webkit-scrollbar {
+           width: 4px;
+       }
+       .social-grid::-webkit-scrollbar-thumb {
+           background: #1fff8e;
+           border-radius: 4px;
+       }
+       .social-grid::-webkit-scrollbar-track {
+           background: #0b140b;
+       }
 
         .edex-footer { background: #0f1a0f; border-top: 2px solid #1fff8e; padding: 8px 20px; color: #4eff9e; font-size: 0.8rem; display: flex; justify-content: space-between; }
     </style> 
+
