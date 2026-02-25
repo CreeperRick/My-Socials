@@ -1,8 +1,7 @@
-;<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ESPdefeator</title>
     <style>
@@ -16,11 +15,11 @@
 
         body {
             background-color: #0c0c0c;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -40,7 +39,7 @@
             z-index: 20;
             width: 95vw;
             max-width: 1400px;
-            height: 90vh;
+            height: 90vh; /* Desktop Default */
             background: #0f120f;
             border: 2px solid #1fff8e;
             border-radius: 12px;
@@ -133,6 +132,7 @@
             align-items: center;
             justify-content: center;
             flex: 1;
+            padding: 10px;
         }
         .analog-clock { font-size: 3.5rem; color: #8affb0; text-shadow: 0 0 15px #1fff8e; }
 
@@ -144,30 +144,16 @@
             flex: 1.5;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Keep the panel itself clean */
+            overflow-y: auto; /* Added scroll functionality */
+            scrollbar-width: thin;
+            scrollbar-color: #1fff8e #0b140b;
         }
 
-        /* SCROLLABLE GRID LOGIC */
         .social-grid { 
             display: grid; 
             grid-template-columns: 1fr; 
             gap: 8px; 
             margin-top: 10px; 
-            overflow-y: auto; /* Enable vertical scroll */
-            max-height: 150px; /* Limit height to trigger scrolling */
-            padding-right: 5px;
-        }
-
-        /* Custom scrollbar for the grid */
-        .social-grid::-webkit-scrollbar {
-            width: 4px;
-        }
-        .social-grid::-webkit-scrollbar-thumb {
-            background: #1fff8e;
-            border-radius: 4px;
-        }
-        .social-grid::-webkit-scrollbar-track {
-            background: #0b140b;
         }
 
         .social-grid a { 
@@ -177,6 +163,44 @@
         .social-grid a:hover { background: #1f4a1f; box-shadow: 0 0 10px #1fff8e; }
 
         .edex-footer { background: #0f1a0f; border-top: 2px solid #1fff8e; padding: 8px 20px; color: #4eff9e; font-size: 0.8rem; display: flex; justify-content: space-between; }
+
+        /* --- MOBILE RESPONSIVE OVERRIDES --- */
+        @media (max-width: 850px) {
+            .edex-terminal {
+                height: auto;
+                min-height: 98vh;
+                margin: 5px;
+            }
+            .edex-main {
+                flex-direction: column;
+                overflow-y: visible;
+            }
+            .file-explorer {
+                width: 100%;
+                max-height: 250px;
+            }
+            .center-area {
+                flex: none;
+            }
+            /* Stack clock, spotify, and links */
+            .center-area > div:last-child {
+                flex-direction: column !important;
+            }
+            .terminal-window {
+                min-height: 350px;
+            }
+            .analog-clock {
+                font-size: 2.5rem;
+            }
+            .status-bar {
+                font-size: 0.7rem;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            .tree-item {
+                padding: 12px 12px 12px 35px; /* Larger touch targets */
+            }
+        }
     </style>
 </head>
 <body>
@@ -221,10 +245,10 @@
 
                     <div class="social-links-panel" style="flex: 1.5; padding: 5px;">
                         <div style="color:#8affb0; border-bottom:1px solid #1fff8e; font-size:0.8rem; padding-bottom:4px; margin-bottom: 5px;">⤷ AUDIO_SUBSYSTEM</div>
-                    <iframe 
+                        <iframe 
                             id="spotify-iframe"
                             style="border-radius:12px" 
-                            src="https://open.spotify.com/embed/playlist/0PpupHUzxAX0brDme2ToyC?utm_source=generator&theme=0" 
+                            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M" 
                             width="100%" 
                             height="152" 
                             frameBorder="0" 
@@ -250,20 +274,24 @@
 
         <div class="edex-footer">
             <span>📡 FS_STATUS: ONLINE</span>
-            <span>NODES: <span id="nodeCount">2040</span> | 101010</span>
+            <span>NODES: <span id="nodeCount">2040</span></span>
         </div>
     </div>
 
     <script>
         (function() {
-            // --- MATRIX ---
+            // --- MATRIX RAIN ---
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
-            let w = canvas.width = window.innerWidth;
-            let h = canvas.height = window.innerHeight;
+            let w, h, cols, drops;
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ｱｲｳｴｵｶｷｸｹｺ";
-            const cols = Math.floor(w / 20);
-            const drops = Array(cols).fill(0);
+
+            function initMatrix() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+                cols = Math.floor(w / 20);
+                drops = Array(cols).fill(0);
+            }
 
             function drawMatrix() {
                 ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
@@ -277,6 +305,9 @@
                     drops[i]++;
                 }
             }
+
+            window.addEventListener('resize', initMatrix);
+            initMatrix();
             setInterval(drawMatrix, 50);
 
             // --- FS DATA ---
@@ -317,6 +348,7 @@
             function addLog(text) {
                 const line = document.createElement('div');
                 line.style.margin = "4px 0";
+                line.style.fontSize = "0.85rem";
                 line.innerHTML = `<span class="prompt">>></span> ${text}`;
                 termContent.insertBefore(line, document.getElementById('dynamicTerminalLine'));
                 termContent.scrollTop = termContent.scrollHeight;
@@ -329,7 +361,12 @@
                     const up = document.createElement('div');
                     up.className = 'tree-item folder-open';
                     up.textContent = '..';
-                    up.onclick = () => { pathStack.pop(); currentFolder = pathStack[pathStack.length-1]; renderTree(); addLog('cd ..'); };
+                    up.onclick = () => { 
+                        pathStack.pop(); 
+                        currentFolder = pathStack[pathStack.length-1]; 
+                        renderTree(); 
+                        addLog('cd ..'); 
+                    };
                     fileTreeEl.appendChild(up);
                 }
 
@@ -373,7 +410,6 @@
             }
             setInterval(updateUI, 1000);
 
-            // Init
             renderTree();
         })();
     </script>
